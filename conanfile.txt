@@ -1,0 +1,11 @@
+[requires]
+sqlite3/3.33.0
+soci/4.0.1
+
+[options]
+soci:cxx11   = True
+soci:sqlite3 = True
+soci:empty   = True
+
+[generators]
+cmake
