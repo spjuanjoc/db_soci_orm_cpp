@@ -9,7 +9,7 @@
 #include <string>
 
 const auto& connectString{"../database1.sqlite3"};
-const auto& table{"table1"};
+const auto& table1{"table1"};
 const soci::backend_factory& backEnd = *soci::factory_sqlite3();
 soci::session sql(backEnd, connectString);
 
@@ -97,26 +97,26 @@ TEST_CASE("should be connected")
 
 TEST_CASE("should try to drop a nonexistent table")
 {
-  tableDropped(table);
-  CHECK_FALSE( tableDropped(table) );
+  tableDropped(table1);
+  CHECK_FALSE( tableDropped(table1) );
 }
 
 TEST_CASE("should create a table")
 {
-  createTable(table);
-  CHECK( tableExists(table) );
+  createTable(table1);
+  CHECK( tableExists(table1) );
 }
 
 TEST_CASE("should insert two rows into table")
 {
-  insertInto(table);
-  CHECK( getNumberOfRows(table) == 2 );
+  insertInto(table1);
+  CHECK( getNumberOfRows(table1) == 2 );
 }
 
 TEST_CASE("should get a row from a given value")
 {
   const int idToFind = 9;
-  const auto [id, name] = getValues(table, idToFind);
+  const auto [id, name] = getValues(table1, idToFind);
 
   CHECK( id == 9);
   CHECK( name == "Jane");
@@ -124,5 +124,5 @@ TEST_CASE("should get a row from a given value")
 
 TEST_CASE("should drop a table")
 {
-  CHECK( tableDropped(table) );
+  CHECK( tableDropped(table1) );
 }
