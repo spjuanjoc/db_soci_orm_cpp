@@ -2,11 +2,12 @@
 #include "fmt/format.h"
 #include "soci/soci.h"
 #include "soci/sqlite3/soci-sqlite3.h"
-#include "sqlite3.h"
 #include <exception>
-#include <iostream>
-#include <ostream>
 #include <string>
+
+namespace test_soci_sqlite3
+{
+
 
 const auto& connectString{"../database1.sqlite3"};
 const auto& table1{"table1"};
@@ -44,6 +45,7 @@ void insertInto(const std::string& tableName)
 {
   if (tableExists(tableName))
   {
+    // language=sql
     sql << fmt::format(R"EOL(INSERT INTO {0} (id, name)
 VALUES
        (7, 'John'),
@@ -126,3 +128,5 @@ TEST_CASE("should drop a table")
 {
   CHECK( tableDropped(table1) );
 }
+
+} // test_soci_sqlite3
