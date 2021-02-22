@@ -4,10 +4,10 @@
 #include "soci/sqlite3/soci-sqlite3.h"
 #include <exception>
 #include <string>
+#include <tuple>
 
 namespace test_soci_sqlite3
 {
-
 
 const auto& connectString{"../database1.sqlite3"};
 const auto& table1{"table1"};
@@ -34,9 +34,11 @@ void createTable(const std::string& tableName)
   if (!tableExists(tableName))
   {
     sql << fmt::format(R"(
-CREATE TABLE {0} (
-    id INTEGER,
-    name VARCHAR2(100)
+CREATE TABLE {0}
+(
+    id      INTEGER,
+    name    VARCHAR2(100),
+    balance REAL
 );)", tableName);
   }
 }
@@ -46,10 +48,10 @@ void insertInto(const std::string& tableName)
   if (tableExists(tableName))
   {
     // language=sql
-    sql << fmt::format(R"EOL(INSERT INTO {0} (id, name)
-VALUES
-       (7, 'John'),
-       (9, 'Jane');
+    sql << fmt::format(R"EOL(
+INSERT INTO {0} (id, name, balance)
+VALUES (7, 'John', 100.20),
+       (9, 'Jane', 200.10);
 )EOL", tableName);
   }
 }
@@ -80,16 +82,18 @@ bool tableDropped(const std::string& tableName)
   return result;
 }
 
-std::pair<int, std::string> getValues(const std::string& tableName, int idToFind)
+std::tuple<int, std::string, double> getValues(const std::string& tableName, int idToFind)
 {
   int id = 0;
   std::string name{};
+  double balance = 0.0;
 
-  sql << fmt::format("SELECT id, name FROM {0} WHERE id = {1}", tableName, idToFind),
+  sql << fmt::format("SELECT id, name, balance FROM {0} WHERE id = {1}", tableName, idToFind),
       soci::into(id),
-      soci::into(name);
+      soci::into(name),
+      soci::into(balance);
 
-  return {id, name};
+  return {id, name, balance};
 }
 
 TEST_CASE("should be connected")
@@ -118,10 +122,11 @@ TEST_CASE("should insert two rows into table")
 TEST_CASE("should get a row from a given value")
 {
   const int idToFind = 9;
-  const auto [id, name] = getValues(table1, idToFind);
+  const auto [id, name, balance] = getValues(table1, idToFind);
 
   CHECK( id == 9);
   CHECK( name == "Jane");
+  CHECK( balance == 200.10);
 }
 
 TEST_CASE("should drop a table")
