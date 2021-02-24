@@ -7,8 +7,8 @@ add_executable(${TEST_NAME} main.test.cpp)
 # target instructions must be set after add_executable or add_library instructions
 target_compile_options(${TEST_NAME} INTERFACE ${PROJECT_OPTIONS})
 # Get the sources
-file(GLOB_RECURSE TEST_SOURCES LIST_DIRECTORIES false *.test.cpp)
-target_sources(${TEST_NAME} PUBLIC ${TEST_SOURCES})
+#file(GLOB_RECURSE TEST_SOURCES LIST_DIRECTORIES false *.test.cpp)
+#target_sources(${TEST_NAME} PUBLIC ${TEST_SOURCES})
 # Get the headers
 #set(INCLUDES include)
 #include_directories(PUBLIC ${INCLUDES})
@@ -23,6 +23,12 @@ if (ENABLE_CONAN)
 #  conan_basic_setup(TARGETS)
   conan_target_link_libraries(${TEST_NAME} ${CONAN_LIBS})
 endif ()
+
+add_subdirectory(none)
+add_subdirectory(empty)
+add_subdirectory(sqlite3)
+#add_subdirectory(odbc)
+#add_subdirectory(mysql)
 
 add_test(NAME ${TEST_NAME}
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}

@@ -1,6 +1,6 @@
 # conan install --build=soci
 [requires]
-sqlite3/3.33.0
+# sqlite3/3.33.0
 soci/4.0.1
 fmt/7.1.3
 catch2/2.13.4
