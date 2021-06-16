@@ -1,35 +1,24 @@
 set(TEST_NAME ${PROJECT_NAME}_AllTests)
-add_definitions(-DGTEST_LANGUAGE_CXX11)
 
 add_executable(${TEST_NAME} main.test.cpp)
+add_test(${TEST_NAME} ${TEST_NAME}) # for ctest
+#add_test(NAME ${TEST_NAME}
+#    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+#    COMMAND ${TEST_NAME})
 
-# ---
-# target instructions must be set after add_executable or add_library instructions
-target_compile_options(${TEST_NAME} INTERFACE ${PROJECT_OPTIONS})
-# Get the sources
-#file(GLOB_RECURSE TEST_SOURCES LIST_DIRECTORIES false *.test.cpp)
-#target_sources(${TEST_NAME} PUBLIC ${TEST_SOURCES})
-# Get the headers
-#set(INCLUDES include)
-#include_directories(PUBLIC ${INCLUDES})
-#target_include_directories(${TEST_NAME} PUBLIC ${INCLUDES})
+## Compiler options
+include(../cmake/CompilerOptions.cmake)
+set_project_options(${TEST_NAME})
 
-target_compile_features(${TEST_NAME} PRIVATE cxx_std_17)
+## Find third-party packages
+find_package(Catch2 REQUIRED)
 
-if (ENABLE_CONAN)
-  message("** Conan libs: ${CONAN_LIBS}")
-
-  include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-#  conan_basic_setup(TARGETS)
-  conan_target_link_libraries(${TEST_NAME} ${CONAN_LIBS})
-endif ()
+target_link_libraries(${TEST_NAME} PRIVATE fmt::fmt)
+target_compile_features(${TEST_NAME} PUBLIC cxx_std_17)
+target_include_directories(${TEST_NAME} PRIVATE ${Catch2_INCLUDE_DIRS} ../include)
 
 add_subdirectory(none)
 add_subdirectory(empty)
 add_subdirectory(sqlite3)
 #add_subdirectory(odbc)
 #add_subdirectory(mysql)
-
-add_test(NAME ${TEST_NAME}
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    COMMAND ${TEST_NAME})
