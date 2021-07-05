@@ -8,11 +8,10 @@
 
 namespace test_soci_sqlite3
 {
-
-const auto& connectString{"../database1.sqlite3"};
-const auto& table1{"table1"};
+const auto&                  connectString{"../database1.sqlite3"};
+const auto&                  table1{"table1"};
 const soci::backend_factory& backEnd = *soci::factory_sqlite3();
-soci::session sql(backEnd, connectString);
+soci::session                sql(backEnd, connectString);
 
 bool tableExists(const std::string& tableName)
 {
@@ -20,9 +19,9 @@ bool tableExists(const std::string& tableName)
   try
   {
     sql << fmt::format(R"(SELECT count(*) FROM {0} ;)", tableName);
-
     exists = true;
-  } catch (const std::exception& ex)
+  }
+  catch (const std::exception& ex)
   {
   }
 
@@ -39,7 +38,7 @@ CREATE TABLE {0}
     id      INTEGER,
     name    VARCHAR2(100),
     balance REAL
-);)", tableName);
+);)",tableName);
   }
 }
 
@@ -62,8 +61,7 @@ int getNumberOfRows(const std::string& tableName)
 
   if (tableExists(tableName))
   {
-    sql << fmt::format(R"(SELECT count(*) FROM {0};)", tableName),
-        soci::into(count);
+    sql << fmt::format(R"(SELECT count(*) FROM {0};)", tableName), soci::into(count);
   }
 
   return count;
@@ -84,54 +82,52 @@ bool tableDropped(const std::string& tableName)
 
 std::tuple<int, std::string, double> getValues(const std::string& tableName, int idToFind)
 {
-  int id = 0;
+  int         id = 0;
   std::string name{};
-  double balance = 0.0;
+  double      balance = 0.0;
 
   sql << fmt::format("SELECT id, name, balance FROM {0} WHERE id = {1}", tableName, idToFind),
-      soci::into(id),
-      soci::into(name),
-      soci::into(balance);
+    soci::into(id), soci::into(name), soci::into(balance);
 
   return {id, name, balance};
 }
 
 TEST_CASE("should be connected")
 {
-  CHECK( sql.is_connected() ); //! Since soci 4.0.1
+  CHECK(sql.is_connected());  //! Since soci 4.0.1
 }
 
 TEST_CASE("should try to drop a nonexistent table")
 {
   tableDropped(table1);
-  CHECK_FALSE( tableDropped(table1) );
+  CHECK_FALSE(tableDropped(table1));
 }
 
 TEST_CASE("should create a table")
 {
   createTable(table1);
-  CHECK( tableExists(table1) );
+  CHECK(tableExists(table1));
 }
 
 TEST_CASE("should insert two rows into table")
 {
   insertInto(table1);
-  CHECK( getNumberOfRows(table1) == 2 );
+  CHECK(getNumberOfRows(table1) == 2);
 }
 
 TEST_CASE("should get a row from a given value")
 {
-  const int idToFind = 9;
+  const int idToFind             = 9;
   const auto [id, name, balance] = getValues(table1, idToFind);
 
-  CHECK( id == 9);
-  CHECK( name == "Jane");
-  CHECK( balance == 200.10);
+  CHECK(id == 9);
+  CHECK(name == "Jane");
+  CHECK(balance == 200.10);
 }
 
 TEST_CASE("should drop a table")
 {
-  CHECK( tableDropped(table1) );
+  CHECK(tableDropped(table1));
 }
 
-} // test_soci_sqlite3
+}  // namespace test_soci_sqlite3
