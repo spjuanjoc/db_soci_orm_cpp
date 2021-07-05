@@ -45,7 +45,6 @@ target_link_libraries(${PROJECT_NAME}
   PRIVATE
     fmt::fmt
     soci::soci
-    SQLite::SQLite
 )
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 target_include_directories(${PROJECT_NAME} PRIVATE include #[[${Catch2_INCLUDE_DIRS}]])

@@ -13,7 +13,6 @@ target_link_libraries(${BACKEND_TEST_NAME}
   PRIVATE
     fmt::fmt
     soci::soci
-    SQLite::SQLite
 )
 target_compile_features(${BACKEND_TEST_NAME} PUBLIC cxx_std_17)
 target_include_directories(${BACKEND_TEST_NAME} PRIVATE ${Catch2_INCLUDE_DIRS})
