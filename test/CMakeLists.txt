@@ -2,9 +2,6 @@ set(TEST_NAME ${PROJECT_NAME}_AllTests)
 
 add_executable(${TEST_NAME} main.test.cpp)
 add_test(${TEST_NAME} ${TEST_NAME}) # for ctest
-#add_test(NAME ${TEST_NAME}
-#    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-#    COMMAND ${TEST_NAME})
 
 ## Compiler options
 include(../cmake/CompilerOptions.cmake)

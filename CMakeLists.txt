@@ -42,12 +42,10 @@ find_package(soci REQUIRED)
 
 ## Target
 target_link_libraries(${PROJECT_NAME}
-    PRIVATE
-      fmt::fmt
-      CONAN_LIB::soci_soci_core
-      CONAN_LIB::soci_soci_empty
-      CONAN_LIB::soci_soci_sqlite3
-      SQLite::SQLite
+  PRIVATE
+    fmt::fmt
+    soci::soci
+    SQLite::SQLite
 )
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 target_include_directories(${PROJECT_NAME} PRIVATE include #[[${Catch2_INCLUDE_DIRS}]])
