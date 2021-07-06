@@ -5,11 +5,7 @@ option(ENABLE_PCH   "Enable Precompiled Headers"  False)
 option(ENABLE_TESTS "Enable tests"                False)
 
 
-## Sources common for all platforms .cpp .hpp
-set(SOURCES
-    src/main.cpp
-    )
-
+set(SOURCES src/main.cpp)
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 
@@ -47,7 +43,7 @@ target_link_libraries(${PROJECT_NAME}
     soci::soci
 )
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
-target_include_directories(${PROJECT_NAME} PRIVATE include #[[${Catch2_INCLUDE_DIRS}]])
+#target_include_directories(${PROJECT_NAME} PRIVATE include)
 
 
 ## Check custom options
@@ -66,7 +62,7 @@ endif ()
 ## Install commands
 install(TARGETS ${PROJECT_NAME}
     RUNTIME DESTINATION "/opt/${PROJECT_NAME}"
-    )
+)
 
 set(CPACK_GENERATOR "DEB")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Juan Jose Castellanos <juancho.312@hotmail.com>")
