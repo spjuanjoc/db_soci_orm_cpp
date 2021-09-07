@@ -118,7 +118,7 @@ TEST_CASE("should insert two rows into table")
 TEST_CASE("should get a row from a given value")
 {
   const int idToFind             = 9;
-  const auto [id, name, balance] = getValues(table1, idToFind);
+  const auto& [id, name, balance] = getValues(table1, idToFind);
 
   CHECK(id == 9);
   CHECK(name == "Jane");
