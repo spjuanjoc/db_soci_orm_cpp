@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(db_soci_orm_cpp VERSION 0.0.1 LANGUAGES CXX)
+project(db_soci_orm_cpp VERSION 0.0.2 LANGUAGES CXX)
 
 option(ENABLE_PCH   "Enable Precompiled Headers"  False)
 option(ENABLE_TESTS "Enable tests"                False)
@@ -22,11 +22,14 @@ if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
 endif()
 
 include(${CMAKE_BINARY_DIR}/conan.cmake)
+conan_check(REQUIRED)
+conan_cmake_autodetect(settings)
 conan_cmake_run(
-    CONANFILE conanfile.txt
-    BASIC_SETUP
-    NO_OUTPUT_DIRS
-    BUILD missing
+  CONANFILE conanfile.txt
+  BASIC_SETUP
+  NO_OUTPUT_DIRS
+  BUILD missing
+  SETTINGS ${settings}
 )
 
 
@@ -61,7 +64,7 @@ endif ()
 
 ## Install commands
 install(TARGETS ${PROJECT_NAME}
-    RUNTIME DESTINATION "/opt/${PROJECT_NAME}"
+  RUNTIME DESTINATION "/opt/${PROJECT_NAME}"
 )
 
 set(CPACK_GENERATOR "DEB")
