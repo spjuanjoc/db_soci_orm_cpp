@@ -17,5 +17,6 @@ target_include_directories(${TEST_NAME} PRIVATE ${Catch2_INCLUDE_DIRS} ../includ
 add_subdirectory(none)
 add_subdirectory(empty)
 add_subdirectory(sqlite3)
+add_subdirectory(postgresql)
 #add_subdirectory(odbc)
 #add_subdirectory(mysql)
