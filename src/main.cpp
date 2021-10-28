@@ -1,13 +1,13 @@
-#include "soci/soci.h"
-#include <iostream>
+#include <fmt/core.h>
+#include <soci/soci.h>
 
 int main()
 {
-  std::cout << "Hello, soci SQLite!\n";
+  fmt::print("Hello, soci SQLite!\n");
 
   const auto& connectString{"../database0.empty.db"};
   const auto& table{"table1"};
-  std::cout << "soci database connected successfully\n";
+  fmt::print("soci database connected successfully\n");
 
   return 0;
 }

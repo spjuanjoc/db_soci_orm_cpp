@@ -1,7 +1,7 @@
-#include "catch2/catch.hpp"
-#include "fmt/format.h"
-#include "soci/soci.h"
-#include "soci/sqlite3/soci-sqlite3.h"
+#include <catch2/catch.hpp>
+#include <fmt/format.h>
+#include <soci/soci.h>
+#include <soci/sqlite3/soci-sqlite3.h>
 #include <exception>
 #include <string>
 #include <tuple>
@@ -38,7 +38,8 @@ CREATE TABLE {0}
     id      INTEGER,
     name    VARCHAR2(100),
     balance REAL
-);)",tableName);
+);)",
+                       tableName);
   }
 }
 
@@ -51,7 +52,8 @@ void insertInto(const std::string& tableName)
 INSERT INTO {0} (id, name, balance)
 VALUES (7, 'John', 100.20),
        (9, 'Jane', 200.10);
-)EOL", tableName);
+)EOL",
+                       tableName);
   }
 }
 
@@ -117,7 +119,7 @@ TEST_CASE("should insert two rows into table")
 
 TEST_CASE("should get a row from a given value")
 {
-  const int idToFind             = 9;
+  const int idToFind              = 9;
   const auto& [id, name, balance] = getValues(table1, idToFind);
 
   CHECK(id == 9);
