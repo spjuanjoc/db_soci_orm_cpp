@@ -1,17 +1,19 @@
 # conan install --build=missing
 [requires]
-  soci/4.0.2
+  soci/4.1.2
   fmt/8.0.1
-  catch2/2.13.4
+  catch2/3.8.1
 
 [options]
-  soci:shared           = True
-  soci:empty            = True
-  soci:with_sqlite3     = True
-  soci:with_postgresql  = True
-  #soci:with_odbc        = True
-  #soci:with_mysql       = True
-
+  soci/*:shared           = True
+  soci/*:empty            = True
+  soci/*:with_sqlite3     = True
+  soci/*:with_odbc        = True
+#  soci/*:with_postgresql  = True
+  soci/*:with_mysql       = True
 
 [generators]
-  cmake_find_package
+  CMakeDeps
+
+[layout]
+  cmake_layout

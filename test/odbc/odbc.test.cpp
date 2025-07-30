@@ -1,18 +1,21 @@
-#include <catch2/catch.hpp>
 #include <fmt/format.h>
 #include <soci/odbc/soci-odbc.h>
 #include <soci/soci.h>
+
 #include <exception>
 #include <string>
+
+#include <catch2/catch_test_macros.hpp>
 
 namespace soci_odbc_test
 {
 TEST_CASE("should successfully connect with odbc backend")
 {
-  const auto& connectString{"db=soci_test"};  //// TODO use a valid connection string
+  const auto& connectString { "db=soci_test" };  //// TODO use a valid connection string
   //  const auto& table{"table1"};
   const soci::backend_factory& backEnd = *soci::factory_odbc();
   soci::session                sql;
+
   try
   {
     CHECK_THROWS(sql.open(backEnd, connectString));

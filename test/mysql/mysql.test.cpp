@@ -1,9 +1,11 @@
-#include <catch2/catch.hpp>
 #include <fmt/format.h>
 #include <soci/mysql/soci-mysql.h>
 #include <soci/soci.h>
+
 #include <exception>
 #include <string>
+
+#include <catch2/catch_test_macros.hpp>
 
 namespace test_soci_mysql
 {

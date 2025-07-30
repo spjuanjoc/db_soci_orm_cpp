@@ -1,25 +1,31 @@
 ## SQLite3 backend tests target
 set(BACKEND_TEST_NAME conan.soci.sqlite3.tests)
-add_executable(${BACKEND_TEST_NAME} ../main.test.cpp sqlite3.test.cpp)
+add_executable(${BACKEND_TEST_NAME} sqlite3.test.cpp)
 
 
 ## Compiler options
 include(../../cmake/CompilerOptions.cmake)
-set_project_options(${BACKEND_TEST_NAME})
+set_compiler_options(${BACKEND_TEST_NAME})
+
+
+## Find third-party packages
+find_package(Catch2 REQUIRED)
+find_package(fmt REQUIRED)
+find_package(SOCI REQUIRED)
 
 
 ## Target
 target_link_libraries(${BACKEND_TEST_NAME}
   PRIVATE
-    fmt::fmt
-    soci::soci
+    ${Catch2_LIBRARIES}
+    ${fmt_LIBRARIES}
+    ${SOCI_LIBRARIES}
 )
-target_compile_features(${BACKEND_TEST_NAME} PUBLIC cxx_std_17)
 target_include_directories(${BACKEND_TEST_NAME} PRIVATE ${Catch2_INCLUDE_DIRS})
 
-
 ## Test
-add_test(NAME ${BACKEND_TEST_NAME}
+add_test(
+  NAME              ${BACKEND_TEST_NAME}
   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-  COMMAND ${BACKEND_TEST_NAME} -d yes --order decl
+  COMMAND           ${BACKEND_TEST_NAME} -d yes --order decl
 )

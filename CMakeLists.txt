@@ -1,8 +1,12 @@
-cmake_minimum_required(VERSION 3.15)
-project(db_soci_orm_cpp VERSION 0.0.2 LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.24)
+
+project(db_soci_orm_cpp
+  VERSION "0.1.0"
+  LANGUAGES CXX
+)
 
 option(ENABLE_PCH   "Enable Precompiled Headers"  False)
-option(ENABLE_TESTS "Enable tests"                False)
+option(ENABLE_TESTS "Enable tests"                True)
 
 
 set(SOURCES src/main.cpp)
@@ -11,42 +15,28 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 
 ## Compiler options
 include(cmake/CompilerOptions.cmake)
-set_project_options(${PROJECT_NAME})
-
-
-## Setup Conan
-if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
-  message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
-  file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/master/conan.cmake"
-      "${CMAKE_BINARY_DIR}/conan.cmake")
-endif()
-
-include(${CMAKE_BINARY_DIR}/conan.cmake)
-conan_check(REQUIRED)
-conan_cmake_autodetect(settings)
-conan_cmake_run(
-  CONANFILE conanfile.txt
-  BASIC_SETUP
-  NO_OUTPUT_DIRS
-  BUILD missing
-  SETTINGS ${settings}
-)
+set_compiler_options(${PROJECT_NAME})
 
 
 ## Find third-party packages
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_BINARY_DIR})
 find_package(fmt REQUIRED)
-find_package(soci REQUIRED)
+find_package(SOCI REQUIRED)
 
 
 ## Target
+target_include_directories(${PROJECT_NAME}
+  SYSTEM PRIVATE # These directories must be placed before other non-system directories
+    ${fmt_INCLUDE_DIRS}
+    ${SOCI_INCLUDE_DIRS}
+  PUBLIC
+    include
+)
+
 target_link_libraries(${PROJECT_NAME}
   PRIVATE
-    fmt::fmt
-    soci::soci
+    ${fmt_LIBRARIES}
+    ${SOCI_LIBRARIES}
 )
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
-#target_include_directories(${PROJECT_NAME} PRIVATE include)
 
 
 ## Check custom options

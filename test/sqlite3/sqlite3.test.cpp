@@ -1,10 +1,13 @@
-#include <catch2/catch.hpp>
 #include <fmt/format.h>
 #include <soci/soci.h>
 #include <soci/sqlite3/soci-sqlite3.h>
+
 #include <exception>
+#include <iostream>
 #include <string>
 #include <tuple>
+
+#include <catch2/catch_test_macros.hpp>
 
 namespace test_soci_sqlite3
 {
@@ -93,6 +96,7 @@ std::tuple<int, std::string, double> getValues(const std::string& tableName, int
 
   return {id, name, balance};
 }
+
 
 TEST_CASE("should be connected")
 {
